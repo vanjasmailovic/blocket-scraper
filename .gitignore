@@ -1,0 +1,6 @@
+settings/credentials.py
+*_log.txt
+*_stdout.txt
+*.pyc
+*.bson
+*.metadata.json
