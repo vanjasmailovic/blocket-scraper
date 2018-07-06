@@ -84,7 +84,7 @@ class BlocketCarsSpider(scrapy.Spider):
         ad_urls = response.css(".ptxs ::attr(href)").extract() 
         ad_urls = [re.split('[?&#]', u)[0]  for u in ad_urls]   # strip each URL of parameters
         for url in ad_urls:
-            # stop on existing URL in DB 
+            # skip existing URL in DB 
             r = db.find_one_db(owner, url)
             index = ad_urls.index(url) 
             if r:
