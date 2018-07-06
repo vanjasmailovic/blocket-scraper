@@ -106,8 +106,8 @@ class BlocketSpider(scrapy.Spider):
             r = db.find_one_db(owner, url)
             index = ad_urls.index(url) 
             if r:
-                print('- - - Stopping on no.', index+1, owner, '-', url)
-                return None 
+                print('- - - Skipping no.', index+1, owner, '-', url)
+                continue 
             
             price_str = extract_from_css(response, index, "span.li_detail_params.monthly_rent ::text")
             price_int = cast_int(price_str)
