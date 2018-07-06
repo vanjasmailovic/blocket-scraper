@@ -57,6 +57,5 @@ def transform_locations(input) -> list:
                 out.append(item + ' ' + next)
             else:
                 out.append(item)
-            
     return out 
     

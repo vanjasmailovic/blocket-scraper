@@ -92,12 +92,13 @@ class MongoDB_helper:
         return results
     
     # MongoDB 3.6
-    def get_owners_urls_db(self) -> list:
+    def get_jobs_cars_db(self) -> list:
         out =  [ ]
         pipeline = [
             {'$unwind': '$urls'},
             {'$match': {
                 'urls.active': 'yes',
+                'urls.desc': 'cars'
             }},
             {'$project': {
                 'owner': 1,        # string
@@ -109,6 +110,34 @@ class MongoDB_helper:
             tupl = (r.get('owner'), r.get('url'))
             out.append(tupl)
         return out
+    
+    # MongoDB 3.6
+    def get_jobs_apartments_db(self) -> list:
+        out =  [ ]
+        pipeline = [
+            {'$unwind': '$urls'},
+            {'$match': {
+                'urls.active': 'yes',
+                'urls.desc': 'apartments'
+            }},
+            {'$project': {
+                'owner': 1,        # string
+                'url': '$urls.url' # string  
+            }}
+        ]
+        results = self._col.aggregate(pipeline=pipeline)
+        for r in results:
+            tupl = (r.get('owner'), r.get('url'))
+            out.append(tupl)
+        return out
+    
+    # MongoDB 3.6
+    def get_price_min_db(self, owner) -> int:
+        return 1
+    
+    # MongoDB 3.6
+    def get_price_max_db(self, owner) -> int:
+        return 1
     
     # MongoDB 3.6
     def get_emails_db(self, owner) -> list:

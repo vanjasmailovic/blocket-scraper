@@ -218,7 +218,7 @@ def send_emails():
 start = stopwatch()
 def crawl():
     # fetch jobs
-    owner_urls = db_owners.get_owners_urls_db()
+    owner_urls = db_owners.get_jobs_cars_db()
     owner_urls = clean_owner_urls(owner_urls)
     scrapy_settings = get_project_settings()
     scrapy_settings.set('car_jobs', owner_urls)

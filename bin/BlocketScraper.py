@@ -59,9 +59,9 @@ import smtplib
 from email.mime.text import MIMEText
 
 
-# TODO: replace with cmdline args
+# TODO: replace with jobs
 price_min = 9000
-price_max = 12000
+price_max = 13000
 # Scraper
 class BlocketSpider(scrapy.Spider):
     name = 'blocket_apartments_spider'
@@ -113,7 +113,7 @@ class BlocketSpider(scrapy.Spider):
             price_int = cast_int(price_str)
             if price_int < price_min:
                 print('- - - Price', price_int, 'is under', price_min, 'for', ' - ', url)
-                return None 
+                continue
                 
             out = {
                 'name': extract_from_css(response, index, 'a.item_link.xiti_ad_heading ::text'),
@@ -196,9 +196,9 @@ def send(owner, results, body, s):
 
         
 def send_emails():
-    ALIAS = 'scraped@blocket.se' 
-    USER = 'testic.testan@gmail.com' 
-    PWD = 'ovojesifra18*'
+    ALIAS = settings.EMAIL_ALIAS
+    USER = settings.EMAIL_USERNAME
+    PWD = settings.EMAIL_PASSWORD
     s = smtplib.SMTP_SSL('smtp.gmail.com', 465)   # TLS 
     s.login(USER, PWD)
     
@@ -222,11 +222,17 @@ def send_emails():
 start = stopwatch()
 def crawl():
     # fetch jobs
-    owner_urls = db_owners.get_owners_urls_db()
+    owner_urls = db_owners.get_jobs_apartments_db()
     owner_urls = clean_owner_urls(owner_urls)
+    # TODO
+    # price_min = db_owners.get_price_min_db()
+    # price_max = db_owners.get_price_max_db()
+    
     scrapy_settings = get_project_settings()
     scrapy_settings.set('apartment_jobs', owner_urls)
     scrapy_settings.set("db_collection", settings.MONGODB_COLLECTION_NAME)
+    # scrapy_settings.set("price_min", price_min)
+    # scrapy_settings.set("price_max", price_max)
     scrapy_settings.set("LOG_LEVEL", 'INFO')
     scrapy_settings.set('LOG_FILE', 'BlocketScraper_log.txt')
     scrapy_settings.set('LOG_STDOUT', 'False') # redirect stdout to file from runner 
