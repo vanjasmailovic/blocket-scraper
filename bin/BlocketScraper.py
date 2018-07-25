@@ -61,7 +61,7 @@ from email.mime.text import MIMEText
 
 # TODO: replace with jobs
 price_min = 9000
-price_max = 13000
+price_max = 15000
 # Scraper
 class BlocketSpider(scrapy.Spider):
     name = 'blocket_apartments_spider'
