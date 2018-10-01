@@ -16,10 +16,6 @@ if module_path not in sys.path:
 if parent not in sys.path:
     sys.path.append(parent)
 
-import re
-from time import monotonic as stopwatch
-from time import time as now
-from datetime import datetime as t
 from furl import furl
 
 
@@ -30,11 +26,15 @@ def cast_int(s) -> int:
     return int(''.join(char for char in s if char.isdigit()))
 	
 
-def clean_owner_urls(urls) -> list:
+def clean_owner_urls(jobs) -> list:
     """
     Removes "&sort" param in order to default to "newest first". 
     """
-    return [(k,furl(url).remove(['sort']).url)  for (k,url) in urls]
+    return [(owner,                             
+             furl(url).remove(['sort']).url,   
+             pmin,                              
+             pmax)                              
+             for (owner,url,pmin,pmax) in jobs]
 
 
 def parse_page(url) -> str:

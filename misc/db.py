@@ -113,7 +113,6 @@ class MongoDB_helper:
     
     # MongoDB 3.6
     def get_jobs_apartments_db(self) -> list:
-        out =  [ ]
         pipeline = [
             {'$unwind': '$urls'},
             {'$match': {
@@ -121,15 +120,14 @@ class MongoDB_helper:
                 'urls.desc': 'apartments'
             }},
             {'$project': {
-                'owner': 1,        # string
-                'url': '$urls.url' # string  
+                'owner': 1,                      # string
+                'url': '$urls.url',              # string  
+                'price_min': '$urls.price_min',  # string  
+                'price_max': '$urls.price_max',  # string  
             }}
         ]
         results = self._col.aggregate(pipeline=pipeline)
-        for r in results:
-            tupl = (r.get('owner'), r.get('url'))
-            out.append(tupl)
-        return out
+        return results
     
     # MongoDB 3.6
     def get_price_min_db(self, owner) -> int:
