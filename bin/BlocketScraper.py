@@ -59,9 +59,6 @@ import smtplib
 from email.mime.text import MIMEText
 
 
-# TODO: replace with jobs
-#price_min = 9000
-#price_max = 15000
 # Scraper
 class BlocketSpider(scrapy.Spider):
     name = 'blocket_apartments_spider'
@@ -254,15 +251,10 @@ def crawl():
                 r.get('price_max', 20000000))
         jobs.append(tupl)
     jobs = clean_owner_urls(jobs)
-    # TODO
-    # price_min = db_owners.get_price_min_db()
-    # price_max = db_owners.get_price_max_db()
     
     scrapy_settings = get_project_settings()
     scrapy_settings.set('apartment_jobs', jobs)
     scrapy_settings.set("db_collection", settings.MONGODB_COLLECTION_NAME)
-    # scrapy_settings.set("price_min", price_min)
-    # scrapy_settings.set("price_max", price_max)
     scrapy_settings.set("LOG_LEVEL", 'INFO')
     scrapy_settings.set('LOG_FILE', 'BlocketScraper_log.txt')
     scrapy_settings.set('LOG_STDOUT', 'False') # redirect stdout to file from runner 
